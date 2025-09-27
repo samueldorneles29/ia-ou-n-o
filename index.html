@@ -1,0 +1,37 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>É IA ou Não?</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin-top: 50px; }
+    input, button { margin: 10px; }
+  </style>
+</head>
+<body>
+  <h1>🔍 Descubra se a imagem é gerada por IA</h1>
+  <input type="file" id="imageInput" accept="image/*">
+  <button onclick="sendImage()">Analisar</button>
+  <p id="result"></p>
+
+  <script>
+    async function sendImage() {
+      const input = document.getElementById('imageInput');
+      const file = input.files[0];
+      if (!file) return alert("Selecione uma imagem!");
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await fetch("http://localhost:5000/analyze", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      document.getElementById("result").innerText = data.resultado;
+    }
+  </script>
+</body>
+</html>
